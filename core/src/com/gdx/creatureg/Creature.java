@@ -16,8 +16,8 @@ import org.w3c.dom.css.Rect;
 import java.awt.*;
 
 public class Creature extends DirectionParent{
-    private static final int MAX_HUNGER = 100;
-    private static final int MAX_LIFETIME = 100;
+    private static final int MAX_HUNGER = 10000;
+    private static final int MAX_LIFETIME = 10000;
     private int creatureType, hunger, lifeTime, health;
 
     Creature(int startX, int startY, double startDir, int creatureType, int creatureID){
@@ -37,19 +37,36 @@ public class Creature extends DirectionParent{
         this.direction = staticMethods.getRandom(0, 360);
         this.health = 100;
         this.hunger = 0;
-        this.lifeTime = 0;
+        this.lifeTime = 0; //ToDo: Actually implement these.
+    }
+
+    private void endOfLife(){
+        CreatureHandler.deleteCreature(this.id);
     }
 
     private void checkForDeleteClick(){
         if (checkForClick(true, true)){
-            CreatureHandler.deleteCreature(this.id);
+            endOfLife();
         }
+    }
+
+    private void updateLifetime(){
+        this.lifeTime += 1;
+        System.out.println(String.valueOf(Gdx.graphics.getDeltaTime()));
+        if (this.lifeTime > this.MAX_LIFETIME){
+            endOfLife();
+        }
+    }
+
+    public int getLifetime(){
+        return this.lifeTime;
     }
 
     public void update(SpriteBatch batch){
         batch.draw(sprite, moveRect.x, moveRect.y);
         speed = staticMethods.getRandom(4, 8);
         pointDirection(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+        updateLifetime();
         move();
         drawTargetLine(batch);
         checkForDeleteClick();
