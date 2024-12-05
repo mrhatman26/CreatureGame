@@ -12,12 +12,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import jdk.internal.foreign.abi.Binding;
 
 public class CreatureGame extends ApplicationAdapter {
-	private SpriteBatch batch;
-	private CreatureHandler creatureHandler;
-	private OrthographicCamera camera;
-	private ShapeRenderer shapeRenderer;
-	private BitmapFont font;
-	public static boolean debug = false;
+	private static SpriteBatch batch;
+	private static CreatureHandler creatureHandler;
+	private static OrthographicCamera camera;
+	private static ShapeRenderer shapeRenderer;
+	private static BitmapFont font;
+	public static boolean debug = true;
 	
 	@Override
 	public void create () {
