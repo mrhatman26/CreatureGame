@@ -15,7 +15,7 @@ public class DirectionParent{
     protected Texture sprite;
     protected Rectangle moveRect;
     private ShapeRenderer shapeRenderer;
-    protected int speed, targetX, targetY, id;
+    protected int speed, targetX, targetY, id, moveTimer;
     protected double direction;
     protected boolean movingToTarget;
 
@@ -31,6 +31,7 @@ public class DirectionParent{
         this.shapeRenderer = new ShapeRenderer();
         this.movingToTarget = false;
         this.id = id;
+        this.moveTimer = staticMethods.getRandom(50, 150);
     }
 
     public void correctDirection(){
@@ -91,6 +92,15 @@ public class DirectionParent{
             }
         }
         return false;
+    }
+
+    public void randomMovement(){
+        this.moveTimer--;
+        if (this.moveTimer < 1){
+            direction = staticMethods.getRandom(0, 360);
+            speed = staticMethods.getRandom(4, 8);
+            this.moveTimer = staticMethods.getRandom(50, 150);
+        }
     }
 
     public void move(){

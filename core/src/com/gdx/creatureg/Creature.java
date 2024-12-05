@@ -69,12 +69,15 @@ public class Creature extends DirectionParent{
 
     public void update(SpriteBatch batch){
         batch.draw(sprite, moveRect.x, moveRect.y);
-        speed = staticMethods.getRandom(4, 8);
-        pointDirection(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         updateLifetime();
         checkHealth();
+        if (!this.movingToTarget) {
+            randomMovement();
+        }
+        else{
+            drawTargetLine(batch);
+        }
         move();
-        drawTargetLine(batch);
         checkForDeleteClick();
     }
 
