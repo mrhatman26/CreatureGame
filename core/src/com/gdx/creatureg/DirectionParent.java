@@ -132,10 +132,8 @@ public class DirectionParent{
 
     public void drawOwnText(SpriteBatch batch, BitmapFont font, int creatureType, int lifeTime){
         if (CreatureGame.debug) {
-            font.draw(batch, String.valueOf(this.targetX) + " | " + String.valueOf(this.targetY), this.moveRect.x, this.moveRect.y + 80);
-            font.draw(batch, String.valueOf(this.direction), this.moveRect.x, this.moveRect.y + 40);
-            font.draw(batch, String.valueOf(creatureType), this.moveRect.x, this.moveRect.y + 120);
-            font.draw(batch, String.valueOf(lifeTime), this.moveRect.x, this.moveRect.y + 160);
+            font.draw(batch, "CreatureType: " + String.valueOf(creatureType), this.moveRect.x, this.moveRect.y + 40);
+            font.draw(batch, "LifeTime: " + String.valueOf(lifeTime), this.moveRect.x, this.moveRect.y + 80);
         }
     }
 
