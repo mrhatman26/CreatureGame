@@ -1,6 +1,7 @@
 package com.gdx.creatureg;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,11 +15,11 @@ public class DirectionParent{
     protected Texture sprite;
     protected Rectangle moveRect;
     private ShapeRenderer shapeRenderer;
-    protected int speed, targetX, targetY;
+    protected int speed, targetX, targetY, id;
     protected double direction;
     protected boolean movingToTarget;
 
-    DirectionParent(int startPosX, int startPosY, double startDir){
+    DirectionParent(int startPosX, int startPosY, double startDir, int id){
         this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_ball.png"));
         this.moveRect = new Rectangle();
         this.moveRect.x = startPosX;
@@ -29,6 +30,7 @@ public class DirectionParent{
         this.targetY = 0;
         this.shapeRenderer = new ShapeRenderer();
         this.movingToTarget = false;
+        this.id = id;
     }
 
     public void correctDirection(){
@@ -53,6 +55,42 @@ public class DirectionParent{
         if (this.moveRect.y > Gdx.graphics.getHeight()){
             this.moveRect.y = (0 - this.sprite.getHeight());
         }
+    }
+
+    public boolean checkForClick(boolean checkRightButton, boolean checkShift){
+        if (checkRightButton){
+            if (checkShift){
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+                    if (Gdx.input.getX() >= this.moveRect.x && Gdx.input.getX() <= this.moveRect.x + this.sprite.getWidth() && Gdx.graphics.getHeight() - Gdx.input.getY() >= this.moveRect.y && Gdx.graphics.getHeight() - Gdx.input.getY() <= this.moveRect.y + this.sprite.getHeight()){
+                        return true;
+                    }
+                }
+            }
+            else{
+                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+                    if (Gdx.input.getX() >= this.moveRect.x && Gdx.input.getX() <= this.moveRect.x + this.sprite.getWidth() && Gdx.graphics.getHeight() - Gdx.input.getY() >= this.moveRect.y && Gdx.graphics.getHeight() - Gdx.input.getY() <= this.moveRect.y + this.sprite.getHeight()){
+                        return true;
+                    }
+                }
+            }
+        }
+        else{
+            if (checkShift){
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+                    if (Gdx.input.getX() >= this.moveRect.x && Gdx.input.getX() <= this.moveRect.x + this.sprite.getWidth() && Gdx.graphics.getHeight() - Gdx.input.getY() >= this.moveRect.y && Gdx.graphics.getHeight() - Gdx.input.getY() <= this.moveRect.y + this.sprite.getHeight()){
+                        return true;
+                    }
+                }
+            }
+            else{
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+                    if (Gdx.input.getX() >= this.moveRect.x && Gdx.input.getX() <= this.moveRect.x + this.sprite.getWidth() && Gdx.graphics.getHeight() - Gdx.input.getY() >= this.moveRect.y && Gdx.graphics.getHeight() - Gdx.input.getY() <= this.moveRect.y + this.sprite.getHeight()){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void move(){

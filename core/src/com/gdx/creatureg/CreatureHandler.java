@@ -8,19 +8,31 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public class CreatureHandler {
-    private Array<Creature> creatures;
-    private int selectedCreatureType;
+    private static Array<Creature> creatures;
+    private static int selectedCreatureType;
     CreatureHandler(){
         this.creatures = new Array<Creature>();
         this.selectedCreatureType = 0;
     }
 
-    private void createCreature(){
-        creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType));
+    private static void createCreature(){
+        creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }
 
-    public void update(SpriteBatch batch, BitmapFont font){
+    public static void deleteCreature(int id){
+        for (int i = 0; i < creatures.size; i++){
+            if (creatures.get(i).id == id){
+                creatures.get(i).dispose();
+                creatures.removeIndex(i);
+            }
+        }
+    }
+
+    public static void update(SpriteBatch batch, BitmapFont font){
         for (Creature creature: creatures){
+            /*if (creature.delete){
+                deleteCreature(creature);
+            }*/
             creature.update(batch);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
@@ -37,13 +49,13 @@ public class CreatureHandler {
         }
     }
 
-    public void drawText(SpriteBatch batch, BitmapFont font){
+    public static void drawText(SpriteBatch batch, BitmapFont font){
         for (Creature creature: creatures){
             creature.drawOwnText(batch, font, creature.getCreatureType());
         }
     }
 
-    public void dispose(){
+    public static void dispose(){
         for (Creature creature: creatures){
             creature.dispose();
         }
