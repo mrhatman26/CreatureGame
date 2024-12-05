@@ -45,21 +45,6 @@ public class DirectionParent{
         }
     }
 
-    public void screenWrap(){ //Deprecated
-        if (this.moveRect.x < (0 - this.sprite.getWidth())){
-            this.moveRect.x = Gdx.graphics.getWidth();
-        }
-        if (this.moveRect.x > Gdx.graphics.getWidth()){
-            this.moveRect.x = (0 - this.sprite.getWidth());
-        }
-        if (this.moveRect.y < (0 - this.sprite.getHeight())){
-            this.moveRect.y = Gdx.graphics.getHeight();
-        }
-        if (this.moveRect.y > Gdx.graphics.getHeight()){
-            this.moveRect.y = (0 - this.sprite.getHeight());
-        }
-    }
-
     public void screenBounce(){
         if (this.moveRect.x < 0 || this.moveRect.x + this.spriteWidth > Gdx.graphics.getWidth() || this.moveRect.y < 0 || this.moveRect.y + this.spriteHeight > Gdx.graphics.getHeight()){
             this.direction += 180;
@@ -116,15 +101,28 @@ public class DirectionParent{
         correctDirection();
         this.moveRect.x += this.speed * Math.cos(Math.toRadians(direction));
         this.moveRect.y += this.speed * Math.sin(Math.toRadians(direction));
-        if (this.moveRect.x == targetX && this.moveRect.y == targetY && movingToTarget){
-            this.speed = 0;
+        if (movingToTarget){
+            reachedTarget();
         }
-        screenWrap();
     }
 
-    public void pointDirection(int targetX, int targetY){
+    public void setTarget(int targetX, int targetY, boolean moveImmediately){
         this.targetX = targetX;
         this.targetY = targetY;
+        if (moveImmediately){
+            this.movingToTarget = true;
+        }
+    }
+
+    public void reachedTarget(){
+        if (this.moveRect.x >= this.targetX - 5 && this.moveRect.x <= this.targetX + 5 && this.moveRect.y >= this.targetY - 5 && this.moveRect.y <= this.targetY + 5){
+            this.targetX = 0;
+            this.targetY = 0;
+            this.movingToTarget = false;
+        }
+    }
+
+    public void pointDirection(){
         this.direction = Math.atan2(this.targetY - this.moveRect.y, this.targetX - this.moveRect.x);
         this.direction = Math.toDegrees(this.direction);
     }

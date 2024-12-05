@@ -2,6 +2,7 @@ package com.gdx.creatureg;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -46,6 +47,9 @@ public class CreatureGame extends ApplicationAdapter {
 		creatureHandler.update(batch, font);
 		batch.disableBlending();
 		batch.end();
+		if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+			creatureHandler.overwriteTargetToMouse();
+		}
 		staticMethods.miscControls();
 	}
 	

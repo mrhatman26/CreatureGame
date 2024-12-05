@@ -15,6 +15,14 @@ public class CreatureHandler {
         this.selectedCreatureType = 0;
     }
 
+    public static void overwriteTargetToMouse(){
+        for (Creature creature: creatures){
+            if (creature.getCreatureType() == selectedCreatureType) {
+                creature.setTarget(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+            }
+        }
+    }
+
     private static void createCreature(){
         creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }

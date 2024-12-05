@@ -40,6 +40,7 @@ public class Creature extends DirectionParent{
         this.lifeTime = 0;
         this.spriteWidth = sprite.getWidth();
         this.spriteHeight = sprite.getHeight();
+        this.speed = staticMethods.getRandom(4, 8);
     }
 
     private void endOfLife(){
@@ -78,6 +79,7 @@ public class Creature extends DirectionParent{
         }
         else{
             drawTargetLine(batch);
+            pointDirection();
         }
         screenBounce();
         move();
