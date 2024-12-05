@@ -37,7 +37,9 @@ public class Creature extends DirectionParent{
         this.direction = staticMethods.getRandom(0, 360);
         this.health = 100;
         this.hunger = 0;
-        this.lifeTime = 0; //ToDo: Actually implement these.
+        this.lifeTime = 0;
+        this.spriteWidth = sprite.getWidth();
+        this.spriteHeight = sprite.getHeight();
     }
 
     private void endOfLife(){
@@ -77,6 +79,7 @@ public class Creature extends DirectionParent{
         else{
             drawTargetLine(batch);
         }
+        screenBounce();
         move();
         checkForDeleteClick();
     }

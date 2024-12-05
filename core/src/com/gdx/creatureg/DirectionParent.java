@@ -15,7 +15,7 @@ public class DirectionParent{
     protected Texture sprite;
     protected Rectangle moveRect;
     private ShapeRenderer shapeRenderer;
-    protected int speed, targetX, targetY, id, moveTimer;
+    protected int speed, targetX, targetY, id, moveTimer, spriteWidth, spriteHeight;
     protected double direction;
     protected boolean movingToTarget;
 
@@ -32,6 +32,8 @@ public class DirectionParent{
         this.movingToTarget = false;
         this.id = id;
         this.moveTimer = staticMethods.getRandom(50, 150);
+        this.spriteWidth = sprite.getWidth();
+        this.spriteHeight = sprite.getHeight();
     }
 
     public void correctDirection(){
@@ -43,7 +45,7 @@ public class DirectionParent{
         }
     }
 
-    public void screenWrap(){
+    public void screenWrap(){ //Deprecated
         if (this.moveRect.x < (0 - this.sprite.getWidth())){
             this.moveRect.x = Gdx.graphics.getWidth();
         }
@@ -56,6 +58,13 @@ public class DirectionParent{
         if (this.moveRect.y > Gdx.graphics.getHeight()){
             this.moveRect.y = (0 - this.sprite.getHeight());
         }
+    }
+
+    public void screenBounce(){
+        if (this.moveRect.x < 0 || this.moveRect.x + this.spriteWidth > Gdx.graphics.getWidth() || this.moveRect.y < 0 || this.moveRect.y + this.spriteHeight > Gdx.graphics.getHeight()){
+            this.direction += 180;
+        }
+        correctDirection();
     }
 
     public boolean checkForClick(boolean checkRightButton, boolean checkShift){
