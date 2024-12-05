@@ -1,5 +1,6 @@
 package com.gdx.creatureg;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.gdx.creatureg.CreatureGame;
@@ -11,7 +12,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("CreatureGame");
-		config.setWindowedMode(1280, 720);
+		config.setWindowedMode(1920, 1080);
+		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		config.useVsync(false);
 		config.setResizable(false);
 		new Lwjgl3Application(new CreatureGame(), config);

@@ -41,7 +41,7 @@ public class CreatureGame extends ApplicationAdapter {
 		camera.update();
 		batch.begin();
 		batch.enableBlending();
-		font.draw(batch, "Version: " + BuildHandler.readVersionNo(), 32, 688 );
+		font.draw(batch, "Version: " + BuildHandler.readVersionNo(), 32, Gdx.graphics.getHeight() - 32);
 		creatureHandler.drawText(batch, font);
 		creatureHandler.update(batch, font);
 		batch.disableBlending();
