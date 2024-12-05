@@ -56,7 +56,7 @@ public class CreatureHandler {
 
     public static void drawText(SpriteBatch batch, BitmapFont font){
         for (Creature creature: creatures){
-            creature.drawOwnText(batch, font, creature.getCreatureType(), creature.getLifetime());
+            creature.drawOwnText(batch, font);
         }
     }
 

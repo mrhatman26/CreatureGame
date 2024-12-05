@@ -19,6 +19,8 @@ public class Creature extends DirectionParent{
     private static final int MAX_HUNGER = 10000;
     private static final int MAX_LIFETIME = 10000;
     private int creatureType, hunger, lifeTime, health;
+    private float energy, energyMax;
+    private boolean sleeping;
 
     Creature(int startX, int startY, double startDir, int creatureType, int creatureID){
         super(startX, startY, startDir, creatureID);
@@ -41,6 +43,9 @@ public class Creature extends DirectionParent{
         this.spriteWidth = sprite.getWidth();
         this.spriteHeight = sprite.getHeight();
         this.speed = staticMethods.getRandom(4, 8);
+        this.energy = (float) 1000;
+        this.energyMax = (float) 1000;
+        this.sleeping = false;
     }
 
     private void endOfLife(){
@@ -60,29 +65,57 @@ public class Creature extends DirectionParent{
         }
     }
 
+    public void drawOwnText(SpriteBatch batch, BitmapFont font){
+        if (CreatureGame.debug) {
+            font.draw(batch, "CreatureType: " + String.valueOf(this.creatureType), this.moveRect.x, this.moveRect.y + 40);
+            font.draw(batch, "LifeTime: " + String.valueOf(this.lifeTime), this.moveRect.x, this.moveRect.y + 80);
+            font.draw(batch, "energy: " + String.valueOf(this.energy), this.moveRect.x, this.moveRect.y + 120);
+            font.draw(batch, "energyMax: " + String.valueOf(this.energyMax), this.moveRect.x, this.moveRect.y + 160);
+            font.draw(batch, "sleeping: " + String.valueOf(this.sleeping), this.moveRect.x, this.moveRect.y + 200);
+        }
+    }
+
+    public void updateEnergy(){
+        this.energy--;
+        if (this.energy < 1){
+            this.sleeping = true;
+        }
+    }
+
+    public void sleep(){
+        this.speed = 0;
+        this.energy++;
+        if (this.energy >= this.energyMax){
+            this.energy = this.energyMax;
+            this.sleeping = false;
+            this.energyMax -= ((float) this.lifeTime / (float) MAX_LIFETIME) * 100;
+        }
+    }
+
     private void checkHealth(){
         if (this.health <= 0){
             endOfLife();
         }
     }
 
-    public int getLifetime(){
-        return this.lifeTime;
-    }
-
     public void update(SpriteBatch batch){
         batch.draw(sprite, moveRect.x, moveRect.y);
         updateLifetime();
-        checkHealth();
-        if (!this.movingToTarget) {
-            randomMovement();
+        if (!sleeping) {
+            updateEnergy();
+            checkHealth();
+            if (!this.movingToTarget) {
+                randomMovement();
+            } else {
+                drawTargetLine(batch);
+                pointDirection();
+            }
+            screenBounce();
+            move();
         }
         else{
-            drawTargetLine(batch);
-            pointDirection();
+            sleep();
         }
-        screenBounce();
-        move();
         checkForDeleteClick();
     }
 

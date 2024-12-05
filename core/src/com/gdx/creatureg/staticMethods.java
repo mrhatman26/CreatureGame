@@ -107,33 +107,24 @@ public class staticMethods {
 
     public static void miscControls(){
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            Gdx.app.exit();
             System.exit(0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
             if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
                 CreatureGame.debug = !CreatureGame.debug;
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.F)){ //https://stackoverflow.com/questions/55554327/how-to-enable-fullscreen-when-pressing-a-key-in-libgdx
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)){
                 Boolean fullScreen = Gdx.graphics.isFullscreen();
                 Graphics.DisplayMode currentScreenMode = Gdx.graphics.getDisplayMode();
                 if (fullScreen){
-                    Gdx.graphics.setWindowedMode(1280, 720);
+                    Gdx.graphics.setWindowedMode(1920, 1080);
                 }
                 else{
                     Gdx.graphics.setFullscreenMode(currentScreenMode);
                 }
             }
         }
-    }
-
-    public static void DrawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix, ShapeRenderer shapeRenderer){
-        Gdx.gl.glLineWidth(lineWidth);
-        shapeRenderer.setProjectionMatrix(projectionMatrix);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(color);
-        shapeRenderer.line(start, end);
-        shapeRenderer.end();
-        Gdx.gl.glLineWidth(1);
     }
 }
 
