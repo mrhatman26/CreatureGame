@@ -30,9 +30,6 @@ public class CreatureHandler {
 
     public static void update(SpriteBatch batch, BitmapFont font){
         for (Creature creature: creatures){
-            /*if (creature.delete){
-                deleteCreature(creature);
-            }*/
             creature.update(batch);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){

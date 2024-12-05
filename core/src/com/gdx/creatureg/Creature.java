@@ -44,7 +44,7 @@ public class Creature extends DirectionParent{
         CreatureHandler.deleteCreature(this.id);
     }
 
-    private void checkForDeleteClick(){
+    private void checkForDeleteClick(){ //Debug, remove this eventually.
         if (checkForClick(true, true)){
             endOfLife();
         }
@@ -52,8 +52,13 @@ public class Creature extends DirectionParent{
 
     private void updateLifetime(){
         this.lifeTime += 1;
-        System.out.println(String.valueOf(Gdx.graphics.getDeltaTime()));
         if (this.lifeTime > this.MAX_LIFETIME){
+            endOfLife();
+        }
+    }
+
+    private void checkHealth(){
+        if (this.health <= 0){
             endOfLife();
         }
     }
@@ -67,6 +72,7 @@ public class Creature extends DirectionParent{
         speed = staticMethods.getRandom(4, 8);
         pointDirection(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         updateLifetime();
+        checkHealth();
         move();
         drawTargetLine(batch);
         checkForDeleteClick();
