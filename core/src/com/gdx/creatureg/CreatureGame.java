@@ -15,6 +15,7 @@ import jdk.internal.foreign.abi.Binding;
 public class CreatureGame extends ApplicationAdapter {
 	private static SpriteBatch batch;
 	private static CreatureHandler creatureHandler;
+	private static FoodHandler foodHandler;
 	private static OrthographicCamera camera;
 	private static ShapeRenderer shapeRenderer;
 	private static BitmapFont font;
@@ -27,6 +28,7 @@ public class CreatureGame extends ApplicationAdapter {
 		}
 		batch = new SpriteBatch();
 		creatureHandler = new CreatureHandler();
+		foodHandler = new FoodHandler();
 		camera = new OrthographicCamera();
 		shapeRenderer = new ShapeRenderer();
 		FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Helvetica.ttf"));
@@ -45,9 +47,10 @@ public class CreatureGame extends ApplicationAdapter {
 		font.draw(batch, "Version: " + BuildHandler.readVersionNo(), 32, Gdx.graphics.getHeight() - 32);
 		creatureHandler.drawText(batch, font);
 		creatureHandler.update(batch, font);
+		foodHandler.update(batch);
 		batch.disableBlending();
 		batch.end();
-		if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+		if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
 			creatureHandler.overwriteTargetToMouse();
 		}
 		staticMethods.miscControls();
@@ -57,5 +60,6 @@ public class CreatureGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		creatureHandler.dispose();
+		foodHandler.dispose();
 	}
 }

@@ -9,11 +9,17 @@ import java.awt.*;
 public class Food {
     private Texture sprite;
     private Rectangle foodRect;
-    private int foodAmount;
+    private int foodAmount, foodID;
     Food(int startX, int startY){
-        this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_food"));
+        this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_food.png"));
         this.foodRect = new Rectangle();
+        this.foodRect.x = startX;
+        this.foodRect.y = startY;
         this.foodAmount = 100;
+    }
+
+    public int getFoodID(){
+        return this.foodID;
     }
 
     public void update(SpriteBatch batch){
