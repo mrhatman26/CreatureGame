@@ -36,6 +36,10 @@ public class DirectionParent{
         this.spriteHeight = sprite.getHeight();
     }
 
+    public Vector2 getPos(){
+        return new Vector2(this.moveRect.x, this.moveRect.y);
+    }
+
     public void correctDirection(){
         if (this.direction > 360){
             this.direction -= 360;
@@ -111,6 +115,7 @@ public class DirectionParent{
         this.targetY = targetY;
         if (moveImmediately){
             this.movingToTarget = true;
+            this.speed = staticMethods.getRandom(4, 8);
         }
     }
 

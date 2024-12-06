@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+
+import java.awt.*;
 
 public class FoodHandler {
     private static Array<Food> foods;
@@ -23,6 +26,31 @@ public class FoodHandler {
             if (foods.get(i).getFoodID() == foodID){
                 foods.removeIndex(i);
             }
+        }
+    }
+
+    public static Food getClosestFood(Creature creature){
+        Food closestFood = null;
+        float lowestDist = -1;
+        float newDist = -1;
+        if (!foods.isEmpty()) {
+            for (int i = 0; i < foods.size; i++){
+                if (lowestDist < 0){
+                    closestFood = foods.get(i);
+                    lowestDist = foods.get(i).getPos().dst(creature.getPos());
+                }
+                else{
+                    newDist = foods.get(i).getPos().dst(creature.getPos());
+                    if (newDist <= lowestDist){
+                        closestFood = foods.get(i);
+                        lowestDist = newDist;
+                    }
+                }
+            }
+            return closestFood;
+        }
+        else{
+            return null;
         }
     }
 

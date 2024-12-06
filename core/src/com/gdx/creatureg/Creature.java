@@ -16,6 +16,7 @@ import org.w3c.dom.css.Rect;
 import java.awt.*;
 
 public class Creature extends DirectionParent{
+    private Food targetFood;
     private static final int MAX_HUNGER = 1000;
     private static final int MAX_LIFETIME = 10000;
     private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, lifeTime, health;
@@ -87,8 +88,11 @@ public class Creature extends DirectionParent{
 
     public void updateEnergy(){
         this.energy--;
-        if (this.energy < 1){
+        if (this.energy < 1 && this.hunger < MAX_HUNGER){
             this.sleeping = true;
+        }
+        else{
+            this.sleeping = false;
         }
     }
 
@@ -105,6 +109,10 @@ public class Creature extends DirectionParent{
     public void updateHunger(){
         this.hunger += hungerIncreaseAmount;
         if (this.hunger >= MAX_HUNGER){
+            if (!movingToTarget) {
+                this.targetFood = FoodHandler.getClosestFood(this);
+                setTarget((int) this.targetFood.getPos().x, (int) this.targetFood.getPos().y, true);
+            }
             this.hunger = MAX_HUNGER;
             this.hungerDamageTimer--;
             if (this.hungerDamageTimer < 1){
