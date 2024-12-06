@@ -16,9 +16,9 @@ import org.w3c.dom.css.Rect;
 import java.awt.*;
 
 public class Creature extends DirectionParent{
-    private static final int MAX_HUNGER = 10000;
+    private static final int MAX_HUNGER = 1000;
     private static final int MAX_LIFETIME = 10000;
-    private int creatureType, hunger, lifeTime, health;
+    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, lifeTime, health;
     private float energy, energyMax;
     private boolean sleeping;
 
@@ -46,6 +46,8 @@ public class Creature extends DirectionParent{
         this.energy = (float) 1000;
         this.energyMax = (float) 1000;
         this.sleeping = false;
+        this.hungerDamageTimer = 100;
+        this.hungerIncreaseAmount = 1;
     }
 
     private void endOfLife(){
@@ -65,13 +67,21 @@ public class Creature extends DirectionParent{
         }
     }
 
+    public void damageHealth(int damageAmount){
+        this.health -= damageAmount;
+    }
+
     public void drawOwnText(SpriteBatch batch, BitmapFont font){
         if (CreatureGame.debug) {
-            font.draw(batch, "CreatureType: " + String.valueOf(this.creatureType), this.moveRect.x, this.moveRect.y + 40);
-            font.draw(batch, "LifeTime: " + String.valueOf(this.lifeTime), this.moveRect.x, this.moveRect.y + 80);
-            font.draw(batch, "energy: " + String.valueOf(this.energy), this.moveRect.x, this.moveRect.y + 120);
-            font.draw(batch, "energyMax: " + String.valueOf(this.energyMax), this.moveRect.x, this.moveRect.y + 160);
-            font.draw(batch, "sleeping: " + String.valueOf(this.sleeping), this.moveRect.x, this.moveRect.y + 200);
+            font.draw(batch, "Health: " + String.valueOf(this.health), this.moveRect.x, this.moveRect.y + 40);
+            font.draw(batch, "CreatureType: " + String.valueOf(this.creatureType), this.moveRect.x, this.moveRect.y + 80);
+            font.draw(batch, "LifeTime: " + String.valueOf(this.lifeTime), this.moveRect.x, this.moveRect.y + 120);
+            font.draw(batch, "energy: " + String.valueOf(this.energy), this.moveRect.x, this.moveRect.y + 160);
+            font.draw(batch, "energyMax: " + String.valueOf(this.energyMax), this.moveRect.x, this.moveRect.y + 200);
+            font.draw(batch, "sleeping: " + String.valueOf(this.sleeping), this.moveRect.x, this.moveRect.y + 240);
+            font.draw(batch, "hunger: " + String.valueOf(this.hunger), this.moveRect.x, this.moveRect.y + 280);
+            font.draw(batch, "hungerIncreaseAmount: " + String.valueOf(this.hungerIncreaseAmount), this.moveRect.x, this.moveRect.y + 320);
+            font.draw(batch, "hungerDamageTimer: " + String.valueOf(this.hungerDamageTimer), this.moveRect.x, this.moveRect.y + 360);
         }
     }
 
@@ -92,6 +102,19 @@ public class Creature extends DirectionParent{
         }
     }
 
+    public void updateHunger(){
+        this.hunger += hungerIncreaseAmount;
+        if (this.hunger >= MAX_HUNGER){
+            this.hunger = MAX_HUNGER;
+            this.hungerDamageTimer--;
+            if (this.hungerDamageTimer < 1){
+                damageHealth(5);
+                this.hungerDamageTimer = 100;
+                this.hungerIncreaseAmount = Math.round(((float) this.lifeTime / (float) MAX_LIFETIME) * 100);
+            }
+        }
+    }
+
     private void checkHealth(){
         if (this.health <= 0){
             endOfLife();
@@ -101,6 +124,7 @@ public class Creature extends DirectionParent{
     public void update(SpriteBatch batch){
         batch.draw(sprite, moveRect.x, moveRect.y);
         updateLifetime();
+        updateHunger();
         if (!sleeping) {
             updateEnergy();
             checkHealth();
