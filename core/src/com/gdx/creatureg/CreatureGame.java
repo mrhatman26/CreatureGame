@@ -47,7 +47,7 @@ public class CreatureGame extends ApplicationAdapter {
 		font.draw(batch, "Version: " + BuildHandler.readVersionNo(), 32, Gdx.graphics.getHeight() - 32);
 		creatureHandler.drawText(batch, font);
 		creatureHandler.update(batch, font);
-		foodHandler.update(batch);
+		foodHandler.update(batch, font);
 		batch.disableBlending();
 		batch.end();
 		if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
