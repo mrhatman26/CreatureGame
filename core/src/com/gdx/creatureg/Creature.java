@@ -186,7 +186,18 @@ public class Creature extends DirectionParent{
     }
 
     public void update(SpriteBatch batch){
-        batch.draw(sprite, moveRect.x, moveRect.y);
+        if (this.sleeping){
+            batch.draw(altSprites[2], moveRect.x, moveRect.y);
+        }
+        else if (this.hunger >= MAX_HUNGER || this.eating){
+            batch.draw(altSprites[1], moveRect.x, moveRect.y);
+        }
+        else if (this.energy >= this.energyMax){
+            batch.draw(altSprites[3], moveRect.x, moveRect.y);
+        }
+        else {
+            batch.draw(sprite, moveRect.x, moveRect.y);
+        }
         offScreen();
         updateLifetime();
         updateHunger();
