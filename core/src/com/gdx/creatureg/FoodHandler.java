@@ -75,7 +75,9 @@ public class FoodHandler {
                 foods.removeIndex(i);
             }
         }
-        font.draw(batch, "foodSpawnTimer: " + String.valueOf(foodSpawnTimer), 32, Gdx.graphics.getHeight() - 64);
+        if (CreatureGame.debug) {
+            font.draw(batch, "foodSpawnTimer: " + String.valueOf(foodSpawnTimer), 32, Gdx.graphics.getHeight() - 64);
+        }
     }
 
     public static void dispose(){
