@@ -20,6 +20,7 @@ public class CreatureGame extends ApplicationAdapter {
 	private static ShapeRenderer shapeRenderer;
 	private static BitmapFont font;
 	public static boolean debug = true;
+	public static boolean restart = true;
 	
 	@Override
 	public void create () {

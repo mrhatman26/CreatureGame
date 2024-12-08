@@ -107,8 +107,12 @@ public class staticMethods {
 
     public static void miscControls(){
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            CreatureGame.restart = false;
             Gdx.app.exit();
-            System.exit(0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.R)){
+            CreatureGame.restart = true;
+            Gdx.app.exit();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
             if (Gdx.input.isKeyJustPressed(Input.Keys.D)){

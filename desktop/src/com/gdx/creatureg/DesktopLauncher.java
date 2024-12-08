@@ -16,7 +16,14 @@ public class DesktopLauncher {
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		config.useVsync(false);
 		config.setResizable(false);
-		new Lwjgl3Application(new CreatureGame(), config);
+		while (true) {
+			if (!CreatureGame.restart) {
+				break;
+			}
+			else {
+				new Lwjgl3Application(new CreatureGame(), config);
+			}
+		}
 		UserInput.closeUserInput();
 	}
 }
