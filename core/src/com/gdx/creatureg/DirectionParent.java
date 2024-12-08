@@ -14,6 +14,7 @@ import java.awt.*;
 
 public class DirectionParent{
     protected Texture sprite;
+    protected Texture[] altSprites;
     protected Rectangle moveRect;
     private ShapeRenderer shapeRenderer;
     protected int speed, targetX, targetY, targetHalfWidth, targetHalfHeight, id, moveTimer, spriteWidth, spriteHeight, halfSpriteHeight, halfSpriteWidth;
@@ -39,6 +40,7 @@ public class DirectionParent{
         this.spriteHeight = sprite.getHeight();
         this.halfSpriteWidth = this.sprite.getWidth();
         this.halfSpriteHeight = this.sprite.getHeight();
+        this.altSprites = new Texture[4];
     }
 
     public Vector2 getPos(){
@@ -162,5 +164,8 @@ public class DirectionParent{
 
     public void dispose(){
         this.sprite.dispose();
+        for (int i = 0; i < this.altSprites.length; i++){
+            this.altSprites[i].dispose();
+        }
     }
 }

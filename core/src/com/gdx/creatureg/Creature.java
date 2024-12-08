@@ -29,13 +29,25 @@ public class Creature extends DirectionParent{
         this.creatureType = creatureType;
         switch (this.creatureType){
             case 0: //Orange creature
-                this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_creature_orange.png"));
+                this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png"));
+                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png")); //Excited
+                this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_hungry.png")); //Hungry
+                this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_sleeping.png")); //Sleeping
+                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_tired.png")); //Tired
                 break;
             case 1: //Greenish
                 this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_creature_greenish.png"));
+                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue.png")); //Excited
+                this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_hungry.png")); //Hungry
+                this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_sleeping.png")); //Sleeping
+                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_tired.png")); //Tired
                 break;
             case 2: //Blue
                 this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_creature_blue.png"));
+                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish.png")); //Excited
+                this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_hungry.png")); //Hungry
+                this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_sleeping.png")); //Sleeping
+                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_tired.png")); //Tired
                 break;
         }
         this.moveRect.width = this.sprite.getWidth();
