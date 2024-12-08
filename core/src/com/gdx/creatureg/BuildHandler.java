@@ -83,6 +83,7 @@ public class BuildHandler {
             buildFileWriter = new FileWriter(buildFile);
             buildFileWriter.write(versionNoToString());
             buildFileWriter.close();
+            System.out.println("Program Version is now: " + versionNoToString());
             return true;
         }
         catch (Exception error){
