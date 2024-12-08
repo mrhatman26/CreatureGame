@@ -17,6 +17,10 @@ public class FoodHandler {
         foodSpawnTimer = staticMethods.getRandom(100, 1000);
     }
 
+    public static Array<Food> getFoods(){
+        return foods;
+    }
+
     public static void createNewFood(int startX, int startY){
         foods.add(new Food(startX, startY, foods.size));
     }
@@ -37,10 +41,10 @@ public class FoodHandler {
             for (int i = 0; i < foods.size; i++){
                 if (lowestDist < 0){
                     closestFood = foods.get(i);
-                    lowestDist = foods.get(i).getPos().dst(creature.getPos());
+                    lowestDist = foods.get(i).getPos(true).dst(creature.getPos());
                 }
                 else{
-                    newDist = foods.get(i).getPos().dst(creature.getPos());
+                    newDist = foods.get(i).getPos(true).dst(creature.getPos());
                     if (newDist <= lowestDist){
                         closestFood = foods.get(i);
                         lowestDist = newDist;
@@ -56,7 +60,7 @@ public class FoodHandler {
 
     public static void update(SpriteBatch batch, BitmapFont font){
         for (Food food: foods){
-            food.update(batch);
+            food.update(batch, font);
         }
         foodSpawnTimer--;
         if (foodSpawnTimer < 1){
@@ -65,6 +69,11 @@ public class FoodHandler {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
             createNewFood(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)){
+            for (int i = 0; i < foods.size; i++){
+                foods.removeIndex(i);
+            }
         }
         font.draw(batch, "foodSpawnTimer: " + String.valueOf(foodSpawnTimer), 32, Gdx.graphics.getHeight() - 64);
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public class DirectionParent{
     protected Texture sprite;
     protected Rectangle moveRect;
     private ShapeRenderer shapeRenderer;
-    protected int speed, targetX, targetY, id, moveTimer, spriteWidth, spriteHeight;
+    protected int speed, targetX, targetY, targetHalfWidth, targetHalfHeight, id, moveTimer, spriteWidth, spriteHeight, halfSpriteHeight, halfSpriteWidth;
     protected double direction;
     protected boolean movingToTarget;
 
@@ -28,12 +29,16 @@ public class DirectionParent{
         this.direction = startDir;
         this.targetX = 0;
         this.targetY = 0;
+        this.targetHalfWidth = 5;
+        this.targetHalfHeight = 5;
         this.shapeRenderer = new ShapeRenderer();
         this.movingToTarget = false;
         this.id = id;
         this.moveTimer = staticMethods.getRandom(50, 150);
         this.spriteWidth = sprite.getWidth();
         this.spriteHeight = sprite.getHeight();
+        this.halfSpriteWidth = this.sprite.getWidth();
+        this.halfSpriteHeight = this.sprite.getHeight();
     }
 
     public Vector2 getPos(){
@@ -54,6 +59,12 @@ public class DirectionParent{
             this.direction += 180;
         }
         correctDirection();
+    }
+
+    public void offScreen(){
+        if (this.moveRect.x < 0 - this.spriteWidth || this.moveRect.x > Gdx.graphics.getWidth() + this.spriteWidth || this.moveRect.y < 0 - this.spriteHeight || this.moveRect.y > Gdx.graphics.getHeight() + this.spriteHeight){
+            CreatureHandler.deleteCreature(this.id);
+        }
     }
 
     public boolean checkForClick(boolean checkRightButton, boolean checkShift){
@@ -110,25 +121,32 @@ public class DirectionParent{
         }
     }
 
-    public void setTarget(int targetX, int targetY, boolean moveImmediately){
+    public void setTarget(int targetX, int targetY, int targetHalfWidth, int targetHalfHeight, boolean moveImmediately){
         this.targetX = targetX;
         this.targetY = targetY;
+        this.targetHalfWidth = targetHalfWidth;
+        this.targetHalfHeight = targetHalfHeight;
         if (moveImmediately){
             this.movingToTarget = true;
             this.speed = staticMethods.getRandom(4, 8);
         }
     }
 
-    public void reachedTarget(){
-        if (this.moveRect.x >= this.targetX - 5 && this.moveRect.x <= this.targetX + 5 && this.moveRect.y >= this.targetY - 5 && this.moveRect.y <= this.targetY + 5){
+    public void reachedTarget(){ //This works on the idea that we are always targeting the centre of an object.
+        if (this.moveRect.x + this.halfSpriteWidth >= this.targetX - this.targetHalfWidth && this.moveRect.x + this.halfSpriteWidth <= this.targetX + this.targetHalfWidth && this.moveRect.y + this.halfSpriteHeight >= this.targetY - this.targetHalfHeight && this.moveRect.y + this.halfSpriteHeight <= this.targetY + this.targetHalfHeight){
             this.targetX = 0;
             this.targetY = 0;
             this.movingToTarget = false;
         }
     }
 
-    public void pointDirection(){
-        this.direction = Math.atan2(this.targetY - this.moveRect.y, this.targetX - this.moveRect.x);
+    public void pointDirection(boolean fromThisCentre){ //Avoid making this false.
+        if (fromThisCentre){
+            this.direction = Math.atan2(this.targetY - (this.moveRect.y + this.halfSpriteHeight), this.targetX - (this.moveRect.x + this.halfSpriteWidth));
+        }
+        else {
+            this.direction = Math.atan2(this.targetY - this.moveRect.y, this.targetX - this.moveRect.x);
+        }
         this.direction = Math.toDegrees(this.direction);
     }
 

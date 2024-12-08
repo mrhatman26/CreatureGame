@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import org.w3c.dom.css.Rect;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.awt.*;
 
@@ -21,7 +22,7 @@ public class Creature extends DirectionParent{
     private static final int MAX_LIFETIME = 10000;
     private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, lifeTime, health;
     private float energy, energyMax;
-    private boolean sleeping;
+    private boolean sleeping, eating;
 
     Creature(int startX, int startY, double startDir, int creatureType, int creatureID){
         super(startX, startY, startDir, creatureID);
@@ -37,6 +38,10 @@ public class Creature extends DirectionParent{
                 this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_creature_blue.png"));
                 break;
         }
+        this.moveRect.width = this.sprite.getWidth();
+        this.moveRect.height = this.sprite.getHeight();
+        this.halfSpriteWidth = this.sprite.getWidth();
+        this.halfSpriteHeight = this.sprite.getHeight();
         this.direction = staticMethods.getRandom(0, 360);
         this.health = 100;
         this.hunger = 0;
@@ -47,6 +52,7 @@ public class Creature extends DirectionParent{
         this.energy = (float) 1000;
         this.energyMax = (float) 1000;
         this.sleeping = false;
+        this.eating = false;
         this.hungerDamageTimer = 100;
         this.hungerIncreaseAmount = 1;
     }
@@ -83,6 +89,8 @@ public class Creature extends DirectionParent{
             font.draw(batch, "hunger: " + String.valueOf(this.hunger), this.moveRect.x, this.moveRect.y + 280);
             font.draw(batch, "hungerIncreaseAmount: " + String.valueOf(this.hungerIncreaseAmount), this.moveRect.x, this.moveRect.y + 320);
             font.draw(batch, "hungerDamageTimer: " + String.valueOf(this.hungerDamageTimer), this.moveRect.x, this.moveRect.y + 360);
+            font.draw(batch, "targetFood: " + String.valueOf(this.targetFood), this.moveRect.x, this.moveRect.y - 40);
+            font.draw(batch, "eating: " + String.valueOf(this.eating), this.moveRect.x, this.moveRect.y - 80);
         }
     }
 
@@ -106,12 +114,25 @@ public class Creature extends DirectionParent{
         }
     }
 
+    public int getMaxHunger(){
+        return MAX_HUNGER;
+    }
+
+    public void setHunger(int newHunger){
+        this.hunger = newHunger;
+    }
+
     public void updateHunger(){
-        this.hunger += hungerIncreaseAmount;
+        if (!this.eating) {
+            this.hunger += hungerIncreaseAmount;
+        }
         if (this.hunger >= MAX_HUNGER){
             if (!movingToTarget) {
                 this.targetFood = FoodHandler.getClosestFood(this);
-                setTarget((int) this.targetFood.getPos().x, (int) this.targetFood.getPos().y, true);
+                if (this.targetFood != null) {
+                    setTarget((int) this.targetFood.getPos(true).x, (int) this.targetFood.getPos(true).y, this.targetFood.getHalfSpriteWidth(), this.targetFood.getHalfSpriteHeight(),true);
+                    checkFoodCollision();
+                }
             }
             this.hunger = MAX_HUNGER;
             this.hungerDamageTimer--;
@@ -123,6 +144,27 @@ public class Creature extends DirectionParent{
         }
     }
 
+    public void checkFoodCollision(){
+        if (this.moveRect.overlaps(this.targetFood.getFoodRect())){
+            this.targetX = 0;
+            this.targetY = 0;
+            this.movingToTarget = false;
+            this.eating = true;
+            speed = 0;
+        }
+    }
+
+    public void eat(){
+        this.hunger -= 10;
+        this.energy += 2;
+        if (this.hunger < 1){
+            this.hunger = 0;
+            this.eating = false;
+            this.targetFood.setFoodAmount(this.targetFood.getFoodAmount() - 10);
+            this.targetFood = null;
+        }
+    }
+
     private void checkHealth(){
         if (this.health <= 0){
             endOfLife();
@@ -131,19 +173,27 @@ public class Creature extends DirectionParent{
 
     public void update(SpriteBatch batch){
         batch.draw(sprite, moveRect.x, moveRect.y);
+        offScreen();
         updateLifetime();
         updateHunger();
         if (!sleeping) {
+            if (this.eating){
+                eat();
+            }
             updateEnergy();
             checkHealth();
             if (!this.movingToTarget) {
-                randomMovement();
+                if (!this.eating) {
+                    randomMovement();
+                }
             } else {
                 drawTargetLine(batch);
-                pointDirection();
+                pointDirection(true);
             }
             screenBounce();
             move();
+            /*Sometimes, when creatures have a target, they perpetually move in one direction and don't stop
+            even if they reach the edges of the screen... Investigate this*/
         }
         else{
             sleep();

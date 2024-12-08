@@ -18,8 +18,14 @@ public class CreatureHandler {
     public static void overwriteTargetToMouse(){
         for (Creature creature: creatures){
             if (creature.getCreatureType() == selectedCreatureType) {
-                creature.setTarget(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+                creature.setTarget(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 5, 5, true);
             }
+        }
+    }
+
+    private static void overWriteHunger(){
+        for (Creature creature: creatures){
+            creature.setHunger(creature.getMaxHunger());
         }
     }
 
@@ -51,6 +57,11 @@ public class CreatureHandler {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
             selectedCreatureType = 2;
+        }
+        if (CreatureGame.debug){
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.H)){
+                overWriteHunger();
+            }
         }
     }
 
