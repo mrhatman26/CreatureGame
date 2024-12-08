@@ -160,7 +160,9 @@ public class Creature extends DirectionParent{
         if (this.hunger < 1){
             this.hunger = 0;
             this.eating = false;
-            this.targetFood.setFoodAmount(this.targetFood.getFoodAmount() - 10);
+            if (this.targetFood != null) {
+                this.targetFood.setFoodAmount(this.targetFood.getFoodAmount() - 10);
+            }
             this.targetFood = null;
         }
     }
