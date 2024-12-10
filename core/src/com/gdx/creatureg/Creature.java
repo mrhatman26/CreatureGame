@@ -20,7 +20,7 @@ public class Creature extends DirectionParent{
     private Food targetFood;
     private static final int MAX_HUNGER = 1000;
     private static final int MAX_LIFETIME = 10000;
-    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, lifeTime, health;
+    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health;
     private float energy, energyMax;
     private boolean sleeping, eating;
 
@@ -67,6 +67,7 @@ public class Creature extends DirectionParent{
         this.eating = false;
         this.hungerDamageTimer = 100;
         this.hungerIncreaseAmount = 1;
+        this.eatTimer = 100;
     }
 
     private void endOfLife(){
@@ -103,6 +104,7 @@ public class Creature extends DirectionParent{
             font.draw(batch, "hungerDamageTimer: " + String.valueOf(this.hungerDamageTimer), this.moveRect.x, this.moveRect.y + 360);
             font.draw(batch, "targetFood: " + String.valueOf(this.targetFood), this.moveRect.x, this.moveRect.y - 40);
             font.draw(batch, "eating: " + String.valueOf(this.eating), this.moveRect.x, this.moveRect.y - 80);
+            font.draw(batch, "eatTimer: " + String.valueOf(this.eatTimer), this.moveRect.x, this.moveRect.y - 120);
         }
     }
 
@@ -167,15 +169,22 @@ public class Creature extends DirectionParent{
     }
 
     public void eat(){
-        this.hunger -= 10;
-        this.energy += 2;
-        if (this.hunger < 1){
+        //this.hunger -= 10; Takes too long, might reimplement.
+        //this.energy += 2;
+        this.eatTimer--;
+        //if (this.hunger < 1){
+        if (this.eatTimer < 1){
             this.hunger = 0;
+            this.energy += 100;
+            if (this.energy > this.energyMax){
+                this.energy = this.energyMax;
+            }
             this.eating = false;
             if (this.targetFood != null) {
                 this.targetFood.setFoodAmount(this.targetFood.getFoodAmount() - 10);
             }
             this.targetFood = null;
+            this.eatTimer = 100;
         }
     }
 
