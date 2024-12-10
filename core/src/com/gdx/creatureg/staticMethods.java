@@ -18,6 +18,7 @@ public class staticMethods {
             newTexture = new Texture(internalPath);
         }
         catch (Exception error){
+            System.out.println("Can't find texture with file path: " + String.valueOf(internalPath) + "\nUsing spr_none.png instead\nThis texture was called from " + String.valueOf(Thread.currentThread().getStackTrace()[2]));
             newTexture = new Texture("spr_none.png");
         }
         return newTexture;

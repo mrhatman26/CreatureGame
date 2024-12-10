@@ -22,7 +22,7 @@ public class DirectionParent{
     protected boolean movingToTarget;
 
     DirectionParent(int startPosX, int startPosY, double startDir, int id){
-        this.sprite = staticMethods.spriteTest(Gdx.files.internal("spr_ball.png"));
+        this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png"));
         this.moveRect = new Rectangle();
         this.moveRect.x = startPosX;
         this.moveRect.y = startPosY;
