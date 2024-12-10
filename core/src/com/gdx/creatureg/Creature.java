@@ -18,7 +18,7 @@ import java.awt.*;
 
 public class Creature extends DirectionParent{
     private Food targetFood;
-    private static final int MAX_HUNGER = 1000;
+    private static final int MAX_HUNGER = 5000;
     private static final int MAX_LIFETIME = 10000;
     private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health;
     private float energy, energyMax;
@@ -153,7 +153,7 @@ public class Creature extends DirectionParent{
             if (this.hungerDamageTimer < 1){
                 damageHealth(5);
                 this.hungerDamageTimer = 100;
-                this.hungerIncreaseAmount = Math.round(((float) this.lifeTime / (float) MAX_LIFETIME) * 100);
+                this.hungerIncreaseAmount += 1;//Math.round(((float) this.lifeTime / (float) MAX_LIFETIME) * 100);
             }
         }
     }

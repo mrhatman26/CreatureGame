@@ -112,7 +112,7 @@ public class staticMethods {
             Gdx.app.exit();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            CreatureGame.restart = true;
+            CreatureGame.restart = false;//true;
             Gdx.app.exit();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
