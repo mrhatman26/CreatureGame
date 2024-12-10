@@ -118,13 +118,18 @@ public class Creature extends DirectionParent{
         }
     }
 
+    public void setEnergy(float newEnergy){
+        this.energy = newEnergy;
+    }
+
     public void sleep(){
         this.speed = 0;
-        this.energy++;
+        this.energy += 10;
         if (this.energy >= this.energyMax){
             this.energy = this.energyMax;
             this.sleeping = false;
             this.energyMax -= ((float) this.lifeTime / (float) MAX_LIFETIME) * 100;
+            this.speed = staticMethods.getRandom(4, 8);
         }
     }
 
@@ -153,7 +158,7 @@ public class Creature extends DirectionParent{
             if (this.hungerDamageTimer < 1){
                 damageHealth(5);
                 this.hungerDamageTimer = 100;
-                this.hungerIncreaseAmount += 1;//Math.round(((float) this.lifeTime / (float) MAX_LIFETIME) * 100);
+                this.hungerIncreaseAmount += 1;
             }
         }
     }

@@ -29,6 +29,12 @@ public class CreatureHandler {
         }
     }
 
+    private static void overWriteSleep(){
+        for (Creature creature: creatures){
+            creature.setEnergy(0);
+        }
+    }
+
     private static void createCreature(){
         creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }
@@ -61,6 +67,9 @@ public class CreatureHandler {
         if (CreatureGame.debug){
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.H)){
                 overWriteHunger();
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.S)){
+                overWriteSleep();
             }
         }
     }
