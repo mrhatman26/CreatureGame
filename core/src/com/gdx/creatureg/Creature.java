@@ -18,11 +18,11 @@ import java.awt.*;
 
 public class Creature extends DirectionParent{
     private Food targetFood;
-    private static final int MAX_HUNGER = 5000;
+    private static final int MAX_HUNGER = 2500;
     private static final int MAX_LIFETIME = 10000;
     private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health;
     private float energy, energyMax;
-    private boolean sleeping, eating;
+    private boolean sleeping, eating, reproduction;
 
     Creature(int startX, int startY, double startDir, int creatureType, int creatureID){
         super(startX, startY, startDir, creatureID);
@@ -47,7 +47,7 @@ public class Creature extends DirectionParent{
                 this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue.png")); //Excited
                 this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_hungry.png")); //Hungry
                 this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_sleeping.png")); //Sleeping
-                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_tired.png")); //Tired
+                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_tired.png")); //Tired\
                 break;
         }
         this.moveRect.width = this.sprite.getWidth();
@@ -68,6 +68,7 @@ public class Creature extends DirectionParent{
         this.hungerDamageTimer = 100;
         this.hungerIncreaseAmount = 1;
         this.eatTimer = 100;
+        this.reproduction = false;
     }
 
     private void endOfLife(){
@@ -193,6 +194,17 @@ public class Creature extends DirectionParent{
     private void checkHealth(){
         if (this.health <= 0){
             endOfLife();
+        }
+    }
+
+    public void reproductionCheck() {
+        if (!this.reproduction){
+            if (this.lifeTime >= MAX_LIFETIME / 10) {
+                this.reproduction = true;
+            }
+        }
+        else{
+            //Target other creature...
         }
     }
 
