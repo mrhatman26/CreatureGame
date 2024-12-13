@@ -43,8 +43,13 @@ public class DirectionParent{
         this.altSprites = new Texture[4];
     }
 
-    public Vector2 getPos(){
-        return new Vector2(this.moveRect.x, this.moveRect.y);
+    public Vector2 getPos(boolean getCentre){
+        if (getCentre){
+            return new Vector2(this.moveRect.x + this.halfSpriteWidth, this.moveRect.y + this.halfSpriteHeight);
+        }
+        else{
+            return new Vector2(this.moveRect.x, this.moveRect.y);
+        }
     }
 
     public void correctDirection(){

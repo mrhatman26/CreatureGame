@@ -19,7 +19,7 @@ public class CreatureGame extends ApplicationAdapter {
 	private static OrthographicCamera camera;
 	private static ShapeRenderer shapeRenderer;
 	private static BitmapFont font;
-	public static boolean debug = false;
+	public static boolean debug = true;
 	public static boolean restart = true;
 	
 	@Override

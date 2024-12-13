@@ -35,9 +35,16 @@ public class CreatureHandler {
         }
     }
 
+    private static void overWriteLifetime(){
+        for (Creature creature: creatures){
+            creature.setLifetime(1000);
+        }
+    }
+
     private static void createCreature(){
         creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }
+
 
     public static void deleteCreature(int id){
         for (int i = 0; i < creatures.size; i++){
@@ -45,6 +52,53 @@ public class CreatureHandler {
                 creatures.get(i).dispose();
                 creatures.removeIndex(i);
             }
+        }
+    }
+
+    public static Creature getClosestCreature(Creature creature, boolean checkReproduceability){
+        Creature closestCreature = null;
+        float lowestDist = -1;
+        float newDist = -1;
+        if (!creatures.isEmpty()){
+            for (int i = 0; i < creatures.size; i++){
+                if (lowestDist < 0){
+                    closestCreature = creatures.get(i);
+                    if (checkReproduceability){
+                        if (closestCreature.getReproduction() && creature.id != closestCreature.id) {
+                            lowestDist = creatures.get(i).getPos(true).dst(creature.getPos(true));
+                        }
+                        else{
+                            lowestDist = -1;
+                        }
+                    }
+                    else {
+                        if (creature.id != closestCreature.id) {
+                            lowestDist = creatures.get(i).getPos(true).dst(creature.getPos(true));
+                        }
+                    }
+                }
+                else{
+                    newDist = creatures.get(i).getPos(true).dst(creature.getPos(true));
+                    if (checkReproduceability){
+                        if (creatures.get(i).getReproduction()){
+                            if (newDist <= lowestDist && creatures.get(i).id != creature.id){
+                                closestCreature = creatures.get(i);
+                                lowestDist = newDist;
+                            }
+                        }
+                    }
+                    else {
+                        if (newDist <= lowestDist && creatures.get(i).id != creature.id) {
+                            closestCreature = creatures.get(i);
+                            lowestDist = newDist;
+                        }
+                    }
+                }
+            }
+            return closestCreature;
+        }
+        else{
+            return null;
         }
     }
 
@@ -70,6 +124,9 @@ public class CreatureHandler {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 overWriteSleep();
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.L)){
+                overWriteLifetime();
             }
         }
     }

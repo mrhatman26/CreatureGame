@@ -18,8 +18,10 @@ import java.awt.*;
 
 public class Creature extends DirectionParent{
     private Food targetFood;
+    private Creature reproductionTarget;
     private static final int MAX_HUNGER = 2500;
     private static final int MAX_LIFETIME = 10000;
+    private static final float TENTH_OF_LIFETIME = (float) MAX_LIFETIME / 10;
     private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health;
     private float energy, energyMax;
     private boolean sleeping, eating, reproduction;
@@ -69,7 +71,10 @@ public class Creature extends DirectionParent{
         this.hungerIncreaseAmount = 1;
         this.eatTimer = 100;
         this.reproduction = false;
+        this.reproductionTarget = null;
     }
+
+    //Clean this class and its methods!
 
     private void endOfLife(){
         CreatureHandler.deleteCreature(this.id);
@@ -85,6 +90,24 @@ public class Creature extends DirectionParent{
         this.lifeTime += 1;
         if (this.lifeTime > this.MAX_LIFETIME){
             endOfLife();
+        }
+    }
+
+    public int getHalfSpriteWidth(){
+        return this.halfSpriteWidth;
+    }
+
+    public int getHalfSpriteHeight(){
+        return this.halfSpriteHeight;
+    }
+
+    public boolean getReproduction(){
+        if (this.reproduction){
+            //Check timer
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -106,6 +129,9 @@ public class Creature extends DirectionParent{
             font.draw(batch, "targetFood: " + String.valueOf(this.targetFood), this.moveRect.x, this.moveRect.y - 40);
             font.draw(batch, "eating: " + String.valueOf(this.eating), this.moveRect.x, this.moveRect.y - 80);
             font.draw(batch, "eatTimer: " + String.valueOf(this.eatTimer), this.moveRect.x, this.moveRect.y - 120);
+            font.draw(batch, "reproduction: " + String.valueOf(this.reproduction), this.moveRect.x, this.moveRect.y - 160);
+            font.draw(batch, "tenthOfLifetime: " + String.valueOf(TENTH_OF_LIFETIME), this.moveRect.x, this.moveRect.y - 200);
+            font.draw(batch, "targetLoc: (" + String.valueOf(this.targetX) + ", " + String.valueOf(this.targetY) + ")", this.moveRect.x, this.moveRect.y - 240);
         }
     }
 
@@ -121,6 +147,10 @@ public class Creature extends DirectionParent{
 
     public void setEnergy(float newEnergy){
         this.energy = newEnergy;
+    }
+
+    public void setLifetime(int newLifetime){
+        this.lifeTime = newLifetime;
     }
 
     public void sleep(){
@@ -199,12 +229,18 @@ public class Creature extends DirectionParent{
 
     public void reproductionCheck() {
         if (!this.reproduction){
-            if (this.lifeTime >= MAX_LIFETIME / 10) {
+            if (this.lifeTime >= TENTH_OF_LIFETIME) {
                 this.reproduction = true;
             }
         }
         else{
             //Target other creature...
+            if (hunger < MAX_HUNGER && !eating && !sleeping){
+                this.reproductionTarget = CreatureHandler.getClosestCreature(this, true);
+                if (this.reproductionTarget != null) {
+                    setTarget((int) this.reproductionTarget.moveRect.x, (int) this.reproductionTarget.moveRect.y, this.reproductionTarget.getHalfSpriteWidth(), this.reproductionTarget.getHalfSpriteHeight(), true);
+                }
+            }
         }
     }
 
@@ -230,6 +266,7 @@ public class Creature extends DirectionParent{
             }
             updateEnergy();
             checkHealth();
+            reproductionCheck();
             if (!this.movingToTarget) {
                 if (!this.eating) {
                     randomMovement();

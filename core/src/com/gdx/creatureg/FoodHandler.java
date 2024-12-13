@@ -41,10 +41,10 @@ public class FoodHandler {
             for (int i = 0; i < foods.size; i++){
                 if (lowestDist < 0){
                     closestFood = foods.get(i);
-                    lowestDist = foods.get(i).getPos(true).dst(creature.getPos());
+                    lowestDist = foods.get(i).getPos(true).dst(creature.getPos(true));
                 }
                 else{
-                    newDist = foods.get(i).getPos(true).dst(creature.getPos());
+                    newDist = foods.get(i).getPos(true).dst(creature.getPos(true));
                     if (newDist <= lowestDist){
                         closestFood = foods.get(i);
                         lowestDist = newDist;
