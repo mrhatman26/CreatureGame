@@ -64,15 +64,16 @@ public class CreatureHandler {
                 if (lowestDist < 0){
                     closestCreature = creatures.get(i);
                     if (checkReproduceability){
-                        if (closestCreature.getReproduction() && creature.id != closestCreature.id) {
+                        if (closestCreature.getReproduction() && creature != closestCreature) {
                             lowestDist = creatures.get(i).getPos(true).dst(creature.getPos(true));
                         }
                         else{
                             lowestDist = -1;
+                            closestCreature = null;
                         }
                     }
                     else {
-                        if (creature.id != closestCreature.id) {
+                        if (creature != closestCreature) {
                             lowestDist = creatures.get(i).getPos(true).dst(creature.getPos(true));
                         }
                     }
@@ -81,14 +82,14 @@ public class CreatureHandler {
                     newDist = creatures.get(i).getPos(true).dst(creature.getPos(true));
                     if (checkReproduceability){
                         if (creatures.get(i).getReproduction()){
-                            if (newDist <= lowestDist && creatures.get(i).id != creature.id){
+                            if (newDist <= lowestDist && creatures.get(i) != creature){
                                 closestCreature = creatures.get(i);
                                 lowestDist = newDist;
                             }
                         }
                     }
                     else {
-                        if (newDist <= lowestDist && creatures.get(i).id != creature.id) {
+                        if (newDist <= lowestDist && creatures.get(i) != creature) {
                             closestCreature = creatures.get(i);
                             lowestDist = newDist;
                         }

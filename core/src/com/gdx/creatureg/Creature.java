@@ -132,6 +132,7 @@ public class Creature extends DirectionParent{
             font.draw(batch, "reproduction: " + String.valueOf(this.reproduction), this.moveRect.x, this.moveRect.y - 160);
             font.draw(batch, "tenthOfLifetime: " + String.valueOf(TENTH_OF_LIFETIME), this.moveRect.x, this.moveRect.y - 200);
             font.draw(batch, "targetLoc: (" + String.valueOf(this.targetX) + ", " + String.valueOf(this.targetY) + ")", this.moveRect.x, this.moveRect.y - 240);
+            font.draw(batch, "temp: (" + String.valueOf(this.reproductionTarget == this) + ")", this.moveRect.x, this.moveRect.y - 280);
         }
     }
 
