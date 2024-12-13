@@ -20,7 +20,6 @@ public class CreatureGame extends ApplicationAdapter {
 	private static ShapeRenderer shapeRenderer;
 	private static BitmapFont font;
 	public static boolean debug = true;
-	public static boolean restart = true;
 	
 	@Override
 	public void create () {
@@ -54,7 +53,7 @@ public class CreatureGame extends ApplicationAdapter {
 		if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
 			creatureHandler.overwriteTargetToMouse();
 		}
-		staticMethods.miscControls();
+		staticMethods.miscControls(this);
 	}
 	
 	@Override

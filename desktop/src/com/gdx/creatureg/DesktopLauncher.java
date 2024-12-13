@@ -7,6 +7,7 @@ import com.gdx.creatureg.CreatureGame;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
+
 	public static void main (String[] arg) {
 		new BuildHandler(CreatureGame.debug);
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -16,14 +17,7 @@ public class DesktopLauncher {
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		config.useVsync(false);
 		config.setResizable(false);
-		while (true) {
-			if (!CreatureGame.restart) {
-				break;
-			}
-			else {
-				new Lwjgl3Application(new CreatureGame(), config);
-			}
-		}
+		new Lwjgl3Application(new CreatureGame(), config);
 		UserInput.closeUserInput();
 	}
 }

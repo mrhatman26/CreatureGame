@@ -106,14 +106,13 @@ public class staticMethods {
         return (int)(Math.random() * (max - min) + min);
     }
 
-    public static void miscControls(){
+    public static void miscControls(CreatureGame mainClass){
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-            CreatureGame.restart = false;
             Gdx.app.exit();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            CreatureGame.restart = false;//true;
-            Gdx.app.exit();
+            mainClass.dispose();
+            mainClass.create();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
             if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
