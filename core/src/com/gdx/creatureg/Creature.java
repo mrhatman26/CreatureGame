@@ -101,6 +101,10 @@ public class Creature extends DirectionParent{
         return this.halfSpriteHeight;
     }
 
+    public Rectangle getRect(){
+        return this.moveRect;
+    }
+
     public boolean getReproduction(){
         if (this.reproduction){
             //Check timer
@@ -240,8 +244,16 @@ public class Creature extends DirectionParent{
                 this.reproductionTarget = CreatureHandler.getClosestCreature(this, true);
                 if (this.reproductionTarget != null) {
                     setTarget((int) this.reproductionTarget.moveRect.x, (int) this.reproductionTarget.moveRect.y, this.reproductionTarget.getHalfSpriteWidth(), this.reproductionTarget.getHalfSpriteHeight(), true);
+                    reproduce();
                 }
             }
+        }
+    }
+
+    public void reproduce(){
+        if (this.moveRect.overlaps(this.reproductionTarget.getRect())){
+            CreatureHandler.createCreature((int) this.moveRect.x, (int) this.moveRect.y, this.creatureType);
+            this.reproductionTarget = null;
         }
     }
 

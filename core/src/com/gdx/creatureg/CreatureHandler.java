@@ -41,10 +41,13 @@ public class CreatureHandler {
         }
     }
 
-    private static void createCreature(){
+    private static void createCreatureAtMouse(){
         creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }
 
+    public static void createCreature(int startX, int startY, int creatureType){
+        creatures.add(new Creature(startX, Gdx.graphics.getHeight() - startY, 0, creatureType, creatures.size));
+    }
 
     public static void deleteCreature(int id){
         for (int i = 0; i < creatures.size; i++){
@@ -108,7 +111,7 @@ public class CreatureHandler {
             creature.update(batch);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-            createCreature();
+            createCreatureAtMouse();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
             selectedCreatureType = 0;
