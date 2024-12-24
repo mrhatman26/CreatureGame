@@ -10,6 +10,7 @@ public class DesktopLauncher {
 
 	public static void main (String[] arg) {
 		new BuildHandler(CreatureGame.debug);
+		new UpdateLogger(CreatureGame.debug);
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("CreatureGame");

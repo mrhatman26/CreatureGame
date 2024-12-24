@@ -37,15 +37,19 @@ public class BuildHandler {
                 isRelease = true;
                 return;
             }
-            System.out.println("Version numbers not being update (This does not apply to the build number).");
+            System.out.println("Version numbers not being updated (This does not apply to the build number).");
         }
         else{
-            System.out.println("Version numbers not being update (This does not apply to the build number).");
+            System.out.println("Version numbers not being updated (This does not apply to the build number).");
         }
     }
 
     private static String versionNoToString(){
         versionNoString = versionNo[0] + "." + versionNo[1] + "." + versionNo[2] + "." + versionNo[3];
+        return versionNoString;
+    }
+
+    public static String getVersionNoString(){
         return versionNoString;
     }
 

@@ -25,6 +25,7 @@ public class CreatureGame extends ApplicationAdapter {
 	public void create () {
 		if (debug){
 			BuildHandler.updateNo();
+			UpdateLogger.createUpdateLog(BuildHandler.getVersionNoString());
 		}
 		batch = new SpriteBatch();
 		creatureHandler = new CreatureHandler();
@@ -44,7 +45,7 @@ public class CreatureGame extends ApplicationAdapter {
 		camera.update();
 		batch.begin();
 		batch.enableBlending();
-		font.draw(batch, "Version: " + BuildHandler.readVersionNo(), 32, Gdx.graphics.getHeight() - 32);
+		font.draw(batch, "Version: " + BuildHandler.getVersionNoString(), 32, Gdx.graphics.getHeight() - 32);
 		creatureHandler.drawText(batch, font);
 		creatureHandler.update(batch, font);
 		foodHandler.update(batch, font);
