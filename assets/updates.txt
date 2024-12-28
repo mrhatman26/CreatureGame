@@ -1,27 +1,12 @@
+
 Version 0.4.4.0:
 	Added: 
-		-New creature types.
-		-New food types.
-		-New music system.
-	Removed: 
-		-Creature emotions.
-		-The fridge.
+		-Timer between reproduction.
 
 Version 0.4.4.1:
-	Added: 
-		-New potato man.
-		-Apple sauce (Extra health).
-		-Fake rain (Does not affect thirst).
-	Removed: 
-		-Creatures (Who need 'em?).
 	Updated: 
-		-Walls no longer store game code (Don't ask).
+		-Modified creation code to use floats instead of integers.
 
 Version 0.4.4.2:
-	Added: 
-		-New band system.
-		-Free popcorn (For all paying members of course).
-		-Ability to remove walls.
 	Updated: 
-		-Apple sauce now doubles health instead of quadrupling it.
-		-Music system updated with new music by artist iejgoiuregiuw.
+		-Modified reproduction creation code to consider room height.

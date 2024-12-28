@@ -21,7 +21,7 @@ public class DirectionParent{
     protected double direction;
     protected boolean movingToTarget;
 
-    DirectionParent(int startPosX, int startPosY, double startDir, int id){
+    DirectionParent(float startPosX, float startPosY, double startDir, int id){
         this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png"));
         this.moveRect = new Rectangle();
         this.moveRect.x = startPosX;
@@ -50,6 +50,10 @@ public class DirectionParent{
         else{
             return new Vector2(this.moveRect.x, this.moveRect.y);
         }
+    }
+
+    public void setSpeed(int newSpeed){
+        this.speed = newSpeed;
     }
 
     public void correctDirection(){

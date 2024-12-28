@@ -22,11 +22,11 @@ public class Creature extends DirectionParent{
     private static final int MAX_HUNGER = 2500;
     private static final int MAX_LIFETIME = 10000;
     private static final float TENTH_OF_LIFETIME = (float) MAX_LIFETIME / 10;
-    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health;
+    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health, reproductionTimer;
     private float energy, energyMax;
     private boolean sleeping, eating, reproduction;
 
-    Creature(int startX, int startY, double startDir, int creatureType, int creatureID){
+    Creature(float startX, float startY, double startDir, int creatureType, int creatureID){
         super(startX, startY, startDir, creatureID);
         this.creatureType = creatureType;
         switch (this.creatureType){
@@ -72,6 +72,7 @@ public class Creature extends DirectionParent{
         this.eatTimer = 100;
         this.reproduction = false;
         this.reproductionTarget = null;
+        this.reproductionTimer = 100;
     }
 
     //Clean this class and its methods!
@@ -136,7 +137,7 @@ public class Creature extends DirectionParent{
             font.draw(batch, "reproduction: " + String.valueOf(this.reproduction), this.moveRect.x, this.moveRect.y - 160);
             font.draw(batch, "tenthOfLifetime: " + String.valueOf(TENTH_OF_LIFETIME), this.moveRect.x, this.moveRect.y - 200);
             font.draw(batch, "targetLoc: (" + String.valueOf(this.targetX) + ", " + String.valueOf(this.targetY) + ")", this.moveRect.x, this.moveRect.y - 240);
-            font.draw(batch, "temp: (" + String.valueOf(this.reproductionTarget == this) + ")", this.moveRect.x, this.moveRect.y - 280);
+            font.draw(batch, "reproductionTimer: (" + String.valueOf(this.reproductionTimer) + ")", this.moveRect.x, this.moveRect.y - 280);
         }
     }
 
@@ -252,8 +253,14 @@ public class Creature extends DirectionParent{
 
     public void reproduce(){
         if (this.moveRect.overlaps(this.reproductionTarget.getRect())){
-            CreatureHandler.createCreature((int) this.moveRect.x, (int) this.moveRect.y, this.creatureType);
-            this.reproductionTarget = null;
+            this.speed = 0;
+            this.reproductionTarget.setSpeed(0);
+            this.reproductionTimer--;
+            if (this.reproductionTimer < 1) {
+                CreatureHandler.createCreature(this.moveRect.x, Gdx.graphics.getHeight() - this.moveRect.y, this.creatureType);
+                this.reproductionTimer = 100;
+                this.reproductionTarget = null;
+            }
         }
     }
 

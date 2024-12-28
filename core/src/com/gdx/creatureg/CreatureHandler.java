@@ -45,7 +45,7 @@ public class CreatureHandler {
         creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }
 
-    public static void createCreature(int startX, int startY, int creatureType){
+    public static void createCreature(float startX, float startY, int creatureType){
         creatures.add(new Creature(startX, Gdx.graphics.getHeight() - startY, 0, creatureType, creatures.size));
     }
 
