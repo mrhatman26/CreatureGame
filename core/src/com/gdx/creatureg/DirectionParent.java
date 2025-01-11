@@ -13,8 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
 import java.awt.*;
 
 public class DirectionParent{
-    protected Texture sprite;
-    protected Texture[] altSprites;
+    protected Texture sprite, childSprite;
+    protected Texture[] altSprites, altChildSprites;
     protected Rectangle moveRect;
     private ShapeRenderer shapeRenderer;
     protected int speed, targetX, targetY, targetHalfWidth, targetHalfHeight, id, moveTimer, spriteWidth, spriteHeight, halfSpriteHeight, halfSpriteWidth;
@@ -23,6 +23,7 @@ public class DirectionParent{
 
     DirectionParent(float startPosX, float startPosY, double startDir, int id){
         this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png"));
+        this.childSprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png"));
         this.moveRect = new Rectangle();
         this.moveRect.x = startPosX;
         this.moveRect.y = startPosY;
@@ -41,6 +42,7 @@ public class DirectionParent{
         this.halfSpriteWidth = this.sprite.getWidth();
         this.halfSpriteHeight = this.sprite.getHeight();
         this.altSprites = new Texture[4];
+        this.altChildSprites = new Texture[4];
     }
 
     public Vector2 getPos(boolean getCentre){
@@ -173,8 +175,10 @@ public class DirectionParent{
 
     public void dispose(){
         this.sprite.dispose();
+        this.childSprite.dispose();
         for (int i = 0; i < this.altSprites.length; i++){
             this.altSprites[i].dispose();
+            this.altChildSprites[i].dispose();
         }
     }
 }

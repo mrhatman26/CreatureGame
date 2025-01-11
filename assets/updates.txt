@@ -10,3 +10,13 @@ Version 0.4.4.1:
 Version 0.4.4.2:
 	Updated: 
 		-Modified reproduction creation code to consider room height.
+
+Version 0.4.5.2:
+	Updated: 
+		-Updated the way in which reproduction is timed.
+
+Version 0.4.6.0:
+	Added: 
+		-Added child sprites.
+	Updated: 
+		-Young creatures will now use child sprites.

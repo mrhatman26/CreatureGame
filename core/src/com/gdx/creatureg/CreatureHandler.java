@@ -41,6 +41,18 @@ public class CreatureHandler {
         }
     }
 
+    public static void overWriteReproduction(){
+        for (Creature creature: creatures){
+            creature.setReproduction(true);
+        }
+    }
+
+    public static void overWriteReproductionNeed(){
+        for (Creature creature: creatures){
+            creature.setReproductionNeed(1000);
+        }
+    }
+
     private static void createCreatureAtMouse(){
         creatures.add(new Creature(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0, selectedCreatureType, creatures.size));
     }
@@ -131,6 +143,12 @@ public class CreatureHandler {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.L)){
                 overWriteLifetime();
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.R)){
+                overWriteReproduction();
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) && Gdx.input.isKeyJustPressed(Input.Keys.R)){
+                overWriteReproductionNeed();
             }
         }
     }

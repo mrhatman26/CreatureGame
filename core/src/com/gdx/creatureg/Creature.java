@@ -20,9 +20,10 @@ public class Creature extends DirectionParent{
     private Food targetFood;
     private Creature reproductionTarget;
     private static final int MAX_HUNGER = 2500;
+    private static final int MAX_RNEED = 1000;
     private static final int MAX_LIFETIME = 10000;
     private static final float TENTH_OF_LIFETIME = (float) MAX_LIFETIME / 10;
-    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health, reproductionTimer;
+    private int creatureType, hunger, hungerDamageTimer, hungerIncreaseAmount, eatTimer, lifeTime, health, reproductionNeed, reproductionTimer;
     private float energy, energyMax;
     private boolean sleeping, eating, reproduction;
 
@@ -32,24 +33,39 @@ public class Creature extends DirectionParent{
         switch (this.creatureType){
             case 0: //Orange creature
                 this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png"));
-                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange.png")); //Excited
+                this.childSprite = staticMethods.spriteTest(Gdx.files.internal("creature_orange/child/spr_creature_orange_child.png"));
+                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_excited.png")); //Excited
                 this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_hungry.png")); //Hungry
                 this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_sleeping.png")); //Sleeping
                 this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/spr_creature_orange_tired.png")); //Tired
+                this.altChildSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/child/spr_creature_orange_child.png")); //NOPE
+                this.altChildSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/child/spr_creature_orange_hungry_child.png")); //Hungry
+                this.altChildSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/child/spr_creature_orange_sleeping_child.png")); //Sleeping
+                this.altChildSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_orange/child/spr_creature_orange_tired_child.png")); //Tired
                 break;
             case 1: //Greenish
                 this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish.png"));
-                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish.png")); //Excited
+                this.childSprite = staticMethods.spriteTest(Gdx.files.internal("creature_green/child/spr_creature_greenish_child.png"));
+                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_excited.png")); //Excited
                 this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_hungry.png")); //Hungry
                 this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_sleeping.png")); //Sleeping
                 this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_green/spr_creature_greenish_tired.png")); //Tired
+                this.altChildSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_green/child/spr_creature_greenish_child.png")); //NOPE
+                this.altChildSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_green/child/spr_creature_greenish_hungry_child.png")); //Hungry
+                this.altChildSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_green/child/spr_creature_greenish_sleeping_child.png")); //Sleeping
+                this.altChildSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_green/child/spr_creature_greenish_tired_child.png")); //Tired
                 break;
             case 2: //Blue
                 this.sprite = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue.png"));
-                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue.png")); //Excited
+                this.childSprite = staticMethods.spriteTest(Gdx.files.internal("creature_blue/child/spr_creature_blue_child.png"));
+                this.altSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_excited.png")); //Excited
                 this.altSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_hungry.png")); //Hungry
                 this.altSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_sleeping.png")); //Sleeping
-                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_tired.png")); //Tired\
+                this.altSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/spr_creature_blue_tired.png")); //Tired
+                this.altChildSprites[0] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/child/spr_creature_blue_child.png")); //NOPE
+                this.altChildSprites[1] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/child/spr_creature_blue_hungry_child.png")); //Hungry
+                this.altChildSprites[2] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/child/spr_creature_blue_sleeping_child.png")); //Sleeping
+                this.altChildSprites[3] = staticMethods.spriteTest(Gdx.files.internal("creature_blue/child/spr_creature_blue_tired_child.png")); //Tired
                 break;
         }
         this.moveRect.width = this.sprite.getWidth();
@@ -138,6 +154,7 @@ public class Creature extends DirectionParent{
             font.draw(batch, "tenthOfLifetime: " + String.valueOf(TENTH_OF_LIFETIME), this.moveRect.x, this.moveRect.y - 200);
             font.draw(batch, "targetLoc: (" + String.valueOf(this.targetX) + ", " + String.valueOf(this.targetY) + ")", this.moveRect.x, this.moveRect.y - 240);
             font.draw(batch, "reproductionTimer: (" + String.valueOf(this.reproductionTimer) + ")", this.moveRect.x, this.moveRect.y - 280);
+            font.draw(batch, "rNeed: (" + String.valueOf(this.reproductionNeed) + ")", this.moveRect.x, this.moveRect.y - 320);
         }
     }
 
@@ -157,6 +174,14 @@ public class Creature extends DirectionParent{
 
     public void setLifetime(int newLifetime){
         this.lifeTime = newLifetime;
+    }
+
+    public void setReproduction(boolean newRep){
+        this.reproduction = newRep;
+    }
+
+    public void setReproductionNeed(int newRep){
+        this.reproductionNeed = newRep;
     }
 
     public void sleep(){
@@ -242,10 +267,13 @@ public class Creature extends DirectionParent{
         else{
             //Target other creature...
             if (hunger < MAX_HUNGER && !eating && !sleeping){
-                this.reproductionTarget = CreatureHandler.getClosestCreature(this, true);
-                if (this.reproductionTarget != null) {
-                    setTarget((int) this.reproductionTarget.moveRect.x, (int) this.reproductionTarget.moveRect.y, this.reproductionTarget.getHalfSpriteWidth(), this.reproductionTarget.getHalfSpriteHeight(), true);
-                    reproduce();
+                this.reproductionNeed++;
+                if (this.reproductionNeed > MAX_RNEED) {
+                    this.reproductionTarget = CreatureHandler.getClosestCreature(this, true);
+                    if (this.reproductionTarget != null) {
+                        setTarget((int) this.reproductionTarget.moveRect.x, (int) this.reproductionTarget.moveRect.y, this.reproductionTarget.getHalfSpriteWidth(), this.reproductionTarget.getHalfSpriteHeight(), true);
+                        reproduce();
+                    }
                 }
             }
         }
@@ -260,22 +288,51 @@ public class Creature extends DirectionParent{
                 CreatureHandler.createCreature(this.moveRect.x, Gdx.graphics.getHeight() - this.moveRect.y, this.creatureType);
                 this.reproductionTimer = 100;
                 this.reproductionTarget = null;
+                this.reproductionNeed = 0;
             }
         }
     }
 
     public void update(SpriteBatch batch){
         if (this.sleeping){
-            batch.draw(altSprites[2], moveRect.x, moveRect.y);
+            if (this.lifeTime < TENTH_OF_LIFETIME){
+                batch.draw(altChildSprites[2], moveRect.x, moveRect.y);
+            }
+            else {
+                batch.draw(altSprites[2], moveRect.x, moveRect.y);
+            }
         }
         else if (this.hunger >= MAX_HUNGER || this.eating){
-            batch.draw(altSprites[1], moveRect.x, moveRect.y);
+            if (this.lifeTime < TENTH_OF_LIFETIME){
+                batch.draw(altChildSprites[1], moveRect.x, moveRect.y);
+            }
+            else {
+                batch.draw(altSprites[1], moveRect.x, moveRect.y);
+            }
         }
         else if (this.energy >= this.energyMax){
-            batch.draw(altSprites[3], moveRect.x, moveRect.y);
+            if (this.lifeTime < TENTH_OF_LIFETIME){
+                batch.draw(altChildSprites[3], moveRect.x, moveRect.y);
+            }
+            else {
+                batch.draw(altSprites[3], moveRect.x, moveRect.y);
+            }
+        }
+        else if (this.reproductionNeed > MAX_RNEED){
+            if (this.lifeTime < TENTH_OF_LIFETIME){
+                batch.draw(altChildSprites[0], moveRect.x, moveRect.y);
+            }
+            else {
+                batch.draw(altSprites[0], moveRect.x, moveRect.y);
+            }
         }
         else {
-            batch.draw(sprite, moveRect.x, moveRect.y);
+            if (this.lifeTime < TENTH_OF_LIFETIME){
+                batch.draw(childSprite, moveRect.x, moveRect.y);
+            }
+            else {
+                batch.draw(sprite, moveRect.x, moveRect.y);
+            }
         }
         offScreen();
         updateLifetime();
