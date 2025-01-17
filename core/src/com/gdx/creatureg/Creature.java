@@ -18,7 +18,7 @@ import java.awt.*;
 
 public class Creature extends DirectionParent{
     private Food targetFood;
-    private Creature reproductionTarget;
+    private Creature parent, reproductionTarget;
     private static final int MAX_HUNGER = 2500;
     private static final int MAX_RNEED = 1000;
     private static final int MAX_LIFETIME = 10000;
@@ -27,7 +27,7 @@ public class Creature extends DirectionParent{
     private float energy, energyMax;
     private boolean sleeping, eating, reproduction;
 
-    Creature(float startX, float startY, double startDir, int creatureType, int creatureID){
+    Creature(float startX, float startY, double startDir, int creatureType, int creatureID, Creature parent, boolean userCreated){
         super(startX, startY, startDir, creatureID);
         this.creatureType = creatureType;
         switch (this.creatureType){
@@ -75,7 +75,12 @@ public class Creature extends DirectionParent{
         this.direction = staticMethods.getRandom(0, 360);
         this.health = 100;
         this.hunger = 0;
-        this.lifeTime = 0;
+        if (userCreated){
+            this.lifeTime = (int) TENTH_OF_LIFETIME;
+        }
+        else {
+            this.lifeTime = 0;
+        }
         this.spriteWidth = sprite.getWidth();
         this.spriteHeight = sprite.getHeight();
         this.speed = staticMethods.getRandom(4, 8);
@@ -89,6 +94,7 @@ public class Creature extends DirectionParent{
         this.reproduction = false;
         this.reproductionTarget = null;
         this.reproductionTimer = 100;
+        this.parent = parent;
     }
 
     //Clean this class and its methods!
@@ -285,7 +291,7 @@ public class Creature extends DirectionParent{
             this.reproductionTarget.setSpeed(0);
             this.reproductionTimer--;
             if (this.reproductionTimer < 1) {
-                CreatureHandler.createCreature(this.moveRect.x, Gdx.graphics.getHeight() - this.moveRect.y, this.creatureType);
+                CreatureHandler.createCreature(this.moveRect.x, Gdx.graphics.getHeight() - this.moveRect.y, this.creatureType, this, false);
                 this.reproductionTimer = 100;
                 this.reproductionTarget = null;
                 this.reproductionNeed = 0;
@@ -344,6 +350,11 @@ public class Creature extends DirectionParent{
             updateEnergy();
             checkHealth();
             reproductionCheck();
+            if (this.hunger < MAX_HUNGER && this.energy > 1 && this.lifeTime < TENTH_OF_LIFETIME){
+                if (this.parent != null) {
+                    this.setTarget((int) this.parent.getRect().x, (int) this.parent.getRect().y, this.parent.getHalfSpriteWidth(), this.parent.getHalfSpriteHeight(), true);
+                }
+            }
             if (!this.movingToTarget) {
                 if (!this.eating) {
                     randomMovement();

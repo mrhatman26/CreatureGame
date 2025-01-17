@@ -20,3 +20,17 @@ Version 0.4.6.0:
 		-Added child sprites.
 	Updated: 
 		-Young creatures will now use child sprites.
+
+Version 0.4.7.0:
+	Added: 
+		-Young creatures now have "parents".
+	Updated: 
+		-When not busy, young creatures will now follow their "parents".
+
+Version 0.4.7.1:
+	Updated: 
+		-If created by a user, a creature will not be a child creature.
+
+Version 0.4.7.2:
+	Updated: 
+		-If created by a user, a creature will not be a child creature.
